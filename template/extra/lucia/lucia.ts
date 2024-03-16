@@ -1,6 +1,6 @@
 import { dev } from "$app/environment";
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
-import { Lucia, type UserSchema } from "lucia";
+import { Lucia } from "lucia";
 import { db } from "../database/database.server.ts";
 
 const adapter = BetterSqlite3Adapter(db, {
@@ -9,9 +9,9 @@ const adapter = BetterSqlite3Adapter(db, {
 });
 
 export const lucia = Lucia(adapter, {
-  getUserAttributes: (data: UserSchema) => {
+  getUserAttributes: (attributes) => {
     return {
-      ...data,
+      ...attributes,
     };
   },
   sessionCookie: {

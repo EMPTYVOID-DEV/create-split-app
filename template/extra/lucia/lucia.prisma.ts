@@ -1,15 +1,14 @@
-import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
+import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { dev } from "$app/environment";
-import { Lucia, type UserSchema } from "lucia";
+import { Lucia } from "lucia";
 import { db } from "../database/database.server.ts";
-import { sessionTable, userTable } from "../database/schema.ts";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
+const adapter = new PrismaAdapter(db.session, db.user);
 
 export const auth = Lucia(adapter, {
-  getUserAttributes: (data: UserSchema) => {
+  getUserAttributes: (attributes) => {
     return {
-      ...data,
+      ...attributes,
     };
   },
   sessionCookie: {
