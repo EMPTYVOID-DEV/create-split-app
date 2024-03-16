@@ -1,0 +1,5 @@
+node_modules
+.env
+dist
+docs/.obsidian
+www/src/lib/server/index.js
