@@ -2,8 +2,10 @@ export type settings = {
   name: string;
   tailwind: boolean;
   lucia: boolean;
-  database: "base-sqlite" | "prisma" | "drizzle";
+  database: orm;
   git: boolean;
   express: boolean;
   installPackages: boolean;
 };
+
+export type orm = "base-sqlite" | "prisma" | "drizzle";

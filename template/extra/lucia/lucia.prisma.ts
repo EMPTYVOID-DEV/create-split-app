@@ -5,7 +5,7 @@ import { db } from "../database/database.server.ts";
 
 const adapter = new PrismaAdapter(db.session, db.user);
 
-export const auth = Lucia(adapter, {
+export const lucia = Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       ...attributes,

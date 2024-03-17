@@ -2,6 +2,7 @@ import inquirer from "inquirer";
 import { settings } from "../types.js";
 import { defaultSettings } from "../const.js";
 import { validateProjectName } from "../utils/validateName.js";
+import { removeTrailingSlash } from "../utils/removingTrailingSlash.js";
 
 export async function cli(): Promise<settings> {
   const settings: settings = structuredClone(defaultSettings);

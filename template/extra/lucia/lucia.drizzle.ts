@@ -6,7 +6,7 @@ import { sessionTable, userTable } from "../database/schema.ts";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
-export const auth = Lucia(adapter, {
+export const lucia = Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       ...attributes,

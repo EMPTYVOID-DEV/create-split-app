@@ -1,12 +1,9 @@
-import path from "path";
 import fsExtra from "fs-extra";
 import inquirer from "inquirer";
-import { PKG_ROOT, workingDir } from "../const.js";
 import { logger } from "../utils/logger.js";
+import { baseSrc as srcDir } from "../const.js";
 
-export async function createBase(projectDir: string) {
-  const srcDir = path.join(PKG_ROOT, "template/base");
-  const destDir = path.resolve(workingDir, projectDir);
+export async function createBase(destDir: string) {
   const doesItExist = fsExtra.existsSync(destDir);
   if (doesItExist) {
     const writingOption = await exitingDirPrompt();
@@ -19,7 +16,8 @@ export async function createBase(projectDir: string) {
     .copy(srcDir, destDir)
     .then(() => logger.success("The base project was copied successfully"))
     .catch((e) => {
-      console.log(e);
+      logger.error("Failed to copy the base project");
+      process.exit(1);
     });
 }
 
