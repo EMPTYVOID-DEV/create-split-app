@@ -35,6 +35,7 @@ export const dependencyMap = new Map<dependencies, string>([
   ["@sveltejs/adapter-node", "^5.0.1"],
   ["@types/node", "^20.11.28"],
   ["autoprefixer", "^10.4.18"],
+  ["@types/better-sqlite3", "^7.6.9"],
   ["postcss", "^8.4.35"],
   ["tailwindcss", "^3.4.1"],
   ["socket.io", "^4.7.5"],

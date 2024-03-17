@@ -6,14 +6,16 @@ import { sessionTable, userTable } from "../database/schema";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
-export const lucia = Lucia(adapter, {
+export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       ...attributes,
     };
   },
   sessionCookie: {
-    secure: !dev,
+    attributes: {
+      secure: !dev,
+    },
   },
 });
 

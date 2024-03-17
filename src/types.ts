@@ -13,6 +13,7 @@ export type orm = "base-sqlite" | "prisma" | "drizzle";
 export type dependencies =
   | "@sveltejs/adapter-node"
   | "@types/express"
+  | "@types/better-sqlite3"
   | "@lucia-auth/adapter-prisma"
   | "@lucia-auth/adapter-drizzle"
   | "@lucia-auth/adapter-sqlite"

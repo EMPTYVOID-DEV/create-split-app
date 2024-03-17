@@ -5,14 +5,16 @@ import { db } from "../database/database";
 
 const adapter = new PrismaAdapter(db.session, db.user);
 
-export const lucia = Lucia(adapter, {
+export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       ...attributes,
     };
   },
   sessionCookie: {
-    secure: !dev,
+    attributes: {
+      secure: !dev,
+    },
   },
 });
 
