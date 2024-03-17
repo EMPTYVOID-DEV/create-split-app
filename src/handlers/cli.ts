@@ -2,14 +2,13 @@ import inquirer from "inquirer";
 import { settings } from "../types.js";
 import { defaultSettings } from "../const.js";
 import { validateProjectName } from "../utils/validateName.js";
-import { removeTrailingSlash } from "../utils/removingTrailingSlash.js";
 
 export async function cli(): Promise<settings> {
   const settings: settings = structuredClone(defaultSettings);
   settings.name = await namePrompt();
   settings.tailwind = await tailwind();
   settings.lucia = await lucia();
-  settings.database = await database();
+  settings.orm = await database();
   settings.express = await express();
   settings.git = await git();
   settings.installPackages = await installPackages();
@@ -85,8 +84,8 @@ async function database() {
     name: "database",
     type: "list",
     choices: ["base-sqlite", "prisma", "drizzle"],
-    message: "Which database adapter you want to use",
-    default: defaultSettings.database,
+    message: "Which orm you want to use",
+    default: defaultSettings.orm,
   });
   return database;
 }

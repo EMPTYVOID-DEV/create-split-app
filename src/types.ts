@@ -2,7 +2,7 @@ export type settings = {
   name: string;
   tailwind: boolean;
   lucia: boolean;
-  database: orm;
+  orm: orm;
   git: boolean;
   express: boolean;
   installPackages: boolean;

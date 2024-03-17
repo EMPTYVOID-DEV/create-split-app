@@ -5,10 +5,13 @@ import { extraSrc } from "../const.js";
 import { logger } from "../utils/logger.js";
 
 export async function expressInstaller(destDir: string) {
-  let expressSrc = path.join(extraSrc, "express");
-  let expressDest = path.join(destDir, "express");
-  let svelteConfigSrc = path.join(extraSrc, "config/svelte.config.express.js");
-  let svelteConfigDest = path.join(destDir, "svelte.config.js");
+  const expressSrc = path.join(extraSrc, "express");
+  const expressDest = path.join(destDir, "express");
+  const svelteConfigSrc = path.join(
+    extraSrc,
+    "config/svelte.config.express.js"
+  );
+  const svelteConfigDest = path.join(destDir, "svelte.config.js");
   const pkgJsonPath = path.join(destDir, "package.json");
   const pkgJson = fsExtra.readJSONSync(pkgJsonPath) as PackageJson;
   delete pkgJson.devDependencies!["@sveltejs/adapter-auto"];

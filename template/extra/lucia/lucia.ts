@@ -1,7 +1,7 @@
 import { dev } from "$app/environment";
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { Lucia } from "lucia";
-import { db } from "../database/database.server.ts";
+import { db } from "../database/database";
 
 const adapter = BetterSqlite3Adapter(db, {
   user: "user",

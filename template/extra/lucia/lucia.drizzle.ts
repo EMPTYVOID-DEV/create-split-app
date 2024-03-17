@@ -1,8 +1,8 @@
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { dev } from "$app/environment";
 import { Lucia } from "lucia";
-import { db } from "../database/database.server.ts";
-import { sessionTable, userTable } from "../database/schema.ts";
+import { db } from "../database/database.ts";
+import { sessionTable, userTable } from "../database/schema";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 

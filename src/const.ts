@@ -9,7 +9,7 @@ export const PKG_ROOT = path.join(distPath, "../");
 export const title = "Split";
 
 export const defaultSettings: settings = {
-  database: "base-sqlite",
+  orm: "base-sqlite",
   git: true,
   installPackages: true,
   lucia: true,
@@ -21,4 +21,11 @@ export const defaultSettings: settings = {
 export const workingDir = process.cwd();
 
 export const extraSrc = path.join(PKG_ROOT, "template/extra");
+
 export const baseSrc = path.join(PKG_ROOT, "template/base");
+
+export const authDestPath = "src/lib/auth";
+
+export const databaseDestPath = "src/lib/database";
+
+export const componentsDestPath = "src/lib/components";

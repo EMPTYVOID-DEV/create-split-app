@@ -1,4 +1,4 @@
-import { lucia } from "$lib/server/auth";
+import { lucia } from "./lib/auth/lucia";
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
