@@ -3,6 +3,7 @@ import fsExtra from "fs-extra";
 import { extraSrc, authDestPath } from "../const.js";
 import { logger } from "../utils/logger.js";
 import { orm } from "../types.js";
+import { addDependency } from "../utils/addDependency.js";
 
 export async function luciaInstaller(destDir: string, orm: orm) {
   const luciaConfigSrc =
@@ -18,6 +19,7 @@ export async function luciaInstaller(destDir: string, orm: orm) {
   const hookLuciaSrc = path.join(extraSrc, "pages/hook.server.ts");
   const hookLuciaDest = path.join(destDir, "src/hooks.server.ts");
 
+  addDependency(["lucia", "oslo"], false, destDir);
   // create the auth dir synchronously
   fsExtra.mkdirSync(authDest, { recursive: true });
 

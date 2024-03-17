@@ -3,6 +3,7 @@ import { orm } from "../types.js";
 import { extraSrc, databaseDestPath } from "../const.js";
 import fsExtra from "fs-extra";
 import { logger } from "../utils/logger.js";
+import { addDependency } from "../utils/addDependency.js";
 
 export async function databaseInstaller(
   destDir: string,
@@ -25,10 +26,16 @@ async function baseSqlite(destDir: string) {
   const databaseDirPath = path.join(destDir, databaseDestPath);
   // creating the database dir
   fsExtra.mkdirSync(databaseDirPath);
+
+  addDependency(
+    ["better-sqlite3", "@lucia-auth/adapter-sqlite"],
+    false,
+    destDir
+  );
   return fsExtra
     .copyFile(srcPath, destPath)
     .then(() => logger.success("Database configs copied successfully"))
-    .catch((e) => console.log(e));
+    .catch((e) => logger.error("Failed to copy base-orm configs"));
 }
 
 async function primsa(destDir: string, isLucia: boolean) {
@@ -43,6 +50,13 @@ async function primsa(destDir: string, isLucia: boolean) {
   // creating the prisma directory and database dir
   fsExtra.mkdirSync(prismaDirPath);
   fsExtra.mkdirSync(databaseDirPath);
+
+  addDependency(
+    ["@prisma/client", "@lucia-auth/adapter-prisma"],
+    false,
+    destDir
+  );
+  addDependency(["prisma"], true, destDir);
 
   return Promise.allSettled([
     fsExtra.copyFile(dbFileSrcPath, dbFileDestPath),
@@ -64,6 +78,9 @@ async function drizzle(destDir: string, isLucia: boolean) {
   const databaseDirPath = path.join(destDir, databaseDestPath);
   // creating the database dir
   fsExtra.mkdirSync(databaseDirPath);
+
+  addDependency(["drizzle-orm", "@lucia-auth/adapter-drizzle"], false, destDir);
+  addDependency(["drizzle-kit"], true, destDir);
 
   return Promise.allSettled([
     fsExtra.copyFile(dbFileSrcPath, dbFileDestPath),

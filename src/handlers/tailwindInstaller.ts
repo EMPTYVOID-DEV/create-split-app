@@ -3,6 +3,7 @@ import fsExtra from "fs-extra";
 import { PackageJson } from "type-fest";
 import { extraSrc } from "../const.js";
 import { logger } from "../utils/logger.js";
+import { addDependency } from "../utils/addDependency.js";
 
 export async function tailwindInstaller(destDir: string) {
   let tailwindSrc = path.join(extraSrc, "config/tailwind.config.cjs");
@@ -16,12 +17,19 @@ export async function tailwindInstaller(destDir: string) {
   let tailwindPrettierDest = path.join(destDir, ".prettierrc");
   let tailwindCssSrc = path.join(extraSrc, "pages/tailwindAppCss.css");
   let tailwindCssDest = path.join(destDir, "src/app.css");
-  // ** removing prettier plugin svelte
+
   const pkgJsonPath = path.join(destDir, "package.json");
   const pkgJson = fsExtra.readJSONSync(pkgJsonPath) as PackageJson;
   delete pkgJson.devDependencies!["prettier-plugin-svelte"];
+  fsExtra.writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2 });
+
+  addDependency(
+    ["postcss", "tailwindcss", "autoprefixer", "prettier-plugin-tailwindcss"],
+    true,
+    destDir
+  );
+
   return Promise.allSettled([
-    fsExtra.writeJson(pkgJsonPath, pkgJson, { spaces: 2 }),
     fsExtra.copyFile(tailwindSrc, tailwindDest),
     fsExtra.copyFile(postcssSrc, postcssDest),
     fsExtra.copyFile(tailwindPrettierSrc, tailwindPrettierDest),
