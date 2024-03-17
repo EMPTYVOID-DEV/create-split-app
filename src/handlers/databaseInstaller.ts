@@ -32,6 +32,7 @@ async function baseSqlite(destDir: string) {
     false,
     destDir
   );
+  addDependency(["@types/better-sqlite3"], true, destDir);
   return fsExtra
     .copyFile(srcPath, destPath)
     .then(() => logger.success("Database configs copied successfully"))
@@ -79,8 +80,12 @@ async function drizzle(destDir: string, isLucia: boolean) {
   // creating the database dir
   fsExtra.mkdirSync(databaseDirPath);
 
-  addDependency(["drizzle-orm", "@lucia-auth/adapter-drizzle"], false, destDir);
-  addDependency(["drizzle-kit"], true, destDir);
+  addDependency(
+    ["drizzle-orm", "better-sqlite3", , "@lucia-auth/adapter-drizzle"],
+    false,
+    destDir
+  );
+  addDependency(["drizzle-kit", "@types/better-sqlite3"], true, destDir);
 
   return Promise.allSettled([
     fsExtra.copyFile(dbFileSrcPath, dbFileDestPath),

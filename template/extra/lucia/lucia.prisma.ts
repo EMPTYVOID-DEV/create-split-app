@@ -6,7 +6,7 @@ import { db } from "../database/database";
 const adapter = new PrismaAdapter(db.session, db.user);
 
 export const lucia = new Lucia(adapter, {
-  getUserAttributes: (attributes) => {
+  getUserAttributes: (attributes: DatabaseSessionAttributes) => {
     return {
       ...attributes,
     };
@@ -21,6 +21,8 @@ export const lucia = new Lucia(adapter, {
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseSessionAttributes: {};
+    DatabaseSessionAttributes: DatabaseSessionAttributes;
   }
 }
+
+interface DatabaseSessionAttributes {}
