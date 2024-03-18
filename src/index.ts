@@ -9,7 +9,7 @@ import { expressInstaller } from "./handlers/expressInstaller.js";
 import { luciaInstaller } from "./handlers/luciaInstaller.js";
 import { databaseInstaller } from "./handlers/databaseInstaller.js";
 import { installPackages as install } from "./handlers/installPackages.js";
-
+import { initGit } from "./handlers/initGit.js";
 import path from "path";
 import { workingDir } from "./const.js";
 
@@ -24,6 +24,7 @@ async function main() {
   if (orm != "no-orm") await databaseInstaller(destDir, orm, lucia);
   if (express) await expressInstaller(destDir);
   if (installPackages) await install(destDir);
+  if (git) initGit(destDir);
 }
 
 main().catch((e) =>
