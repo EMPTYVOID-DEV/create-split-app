@@ -9,7 +9,7 @@ export const PKG_ROOT = path.join(distPath, "../");
 export const title = "Split";
 
 export const defaultSettings: settings = {
-  orm: "base-sqlite",
+  orm: "drizzle",
   git: true,
   installPackages: true,
   lucia: true,
@@ -51,7 +51,6 @@ export const dependencyMap = new Map<dependencies, string>([
   ["drizzle-orm", "^0.30.2"],
   ["@lucia-auth/adapter-drizzle", "^1.0.4"],
   ["better-sqlite3", "^9.4.3"],
-  ["@lucia-auth/adapter-sqlite", "^3.0.1"],
   ["lucia", "^3.1.1"],
   ["oslo", "^1.1.3"],
 ]);

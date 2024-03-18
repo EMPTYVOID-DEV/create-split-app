@@ -79,11 +79,11 @@ async function express() {
 
 async function database() {
   const { database } = await inquirer.prompt<{
-    database: "base-sqlite" | "prisma" | "drizzle";
+    database: "no-orm" | "prisma" | "drizzle";
   }>({
     name: "database",
     type: "list",
-    choices: ["base-sqlite", "prisma", "drizzle"],
+    choices: ["no-orm", "prisma", "drizzle"],
     message: "Which orm you want to use",
     default: defaultSettings.orm,
   });

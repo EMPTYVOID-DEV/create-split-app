@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import { welcome } from "./handlers/welcome.js";
 import { logger } from "./utils/logger.js";
 import { cli } from "./handlers/cli.js";
@@ -18,9 +20,9 @@ async function main() {
   const destDir = path.join(workingDir, name);
   await createBase(destDir);
   if (tailwind) await tailwindInstaller(destDir);
-  if (express) await expressInstaller(destDir);
   if (lucia) await luciaInstaller(destDir, orm);
-  await databaseInstaller(destDir, orm, lucia);
+  if (orm != "no-orm") await databaseInstaller(destDir, orm, lucia);
+  if (express) await expressInstaller(destDir);
   if (installPackages) await install(destDir);
 }
 

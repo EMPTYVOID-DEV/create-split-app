@@ -7,7 +7,7 @@ import { addDependency } from "../utils/addDependency.js";
 
 export async function luciaInstaller(destDir: string, orm: orm) {
   const luciaConfigSrc =
-    orm == "base-sqlite"
+    orm == "no-orm"
       ? path.join(extraSrc, "lucia/lucia.ts")
       : orm == "prisma"
       ? path.join(extraSrc, "lucia/lucia.prisma.ts")
@@ -28,6 +28,6 @@ export async function luciaInstaller(destDir: string, orm: orm) {
     fsExtra.copyFile(appTypesSrc, appTypesDest),
     fsExtra.copyFile(hookLuciaSrc, hookLuciaDest),
   ])
-    .then(() => logger.success("lucia configs copied successfully"))
+    .then(() => logger.success("Lucia configs copied successfully"))
     .catch(() => logger.error("Failed to copy lucia config"));
 }

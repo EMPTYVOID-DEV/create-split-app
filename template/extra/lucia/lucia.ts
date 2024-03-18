@@ -1,12 +1,8 @@
 import { dev } from "$app/environment";
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
 import { Lucia } from "lucia";
-import { db } from "../database/database";
 
-const adapter = new BetterSqlite3Adapter(db, {
-  user: "user",
-  session: "session",
-});
+// create your adapter
+const adapter = new Adapter();
 
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes: DatabaseSessionAttributes) => {

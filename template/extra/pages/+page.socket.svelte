@@ -9,8 +9,8 @@
       messages = [...messages, message];
     });
   });
-  function omit() {
-    io.omit("new");
+  function emit() {
+    io.emit("new");
   }
 </script>
 
@@ -18,7 +18,7 @@
   {#each messages as message}
     <span>{message}</span>
   {/each}
-  <button on:click={() => omit()}>New message</button>
+  <button on:click={() => emit()}>New message</button>
 </div>
 
 <style>
@@ -29,12 +29,12 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 1rem;
-    border: 1px solid var(--silver);
+    border: 1px solid var(--primaryColor);
     border-radius: 0.5rem;
   }
 
   .messages span {
-    background-color: var(--silver);
+    background-color: var(--muteColor);
     padding: 0.5rem 1rem;
     border-radius: 1rem;
     word-break: break-word;
@@ -42,8 +42,8 @@
 
   .messages button {
     align-self: flex-end;
-    background-color: var(--blue);
-    color: var(--white);
+    background-color: var(--primaryColor);
+    color: var(--backgroundColor);
     border: none;
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;

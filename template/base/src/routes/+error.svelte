@@ -56,7 +56,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 30px;
-		background-color: var(--white);
+		background-color: var(--backgroundColor);
 		justify-content: center;
 		align-items: center;
 		overflow: hidden;
@@ -65,7 +65,7 @@
 		font-weight: bolder;
 		font-size: var(--h1);
 		color: transparent;
-		background-color: var(--red);
+		background-color: var(--dangerColor);
 		background-clip: text;
 		-moz-background-clip: text;
 		-webkit-background-clip: text;
@@ -83,21 +83,21 @@
 		font-size: var(--h3);
 		font-weight: bold;
 		line-height: var(--lh3);
-		color: var(--black);
+		color: var(--foregroundColor);
 	}
 	.error div p {
 		font-size: var(--body);
 		line-height: var(--lht);
 		text-align: center;
-		color: var(--black);
+		color: var(--foregroundColor);
 		font-weight: 600;
 	}
 	.error button {
-		color: var(--white);
+		color: var(--backgroundColor);
 		font-size: var(--h4);
 		line-height: var(--lh4);
 		font-weight: 700;
-		background-color: var(--red);
+		background-color: var(--dangerColor);
 		width: fit-content;
 		height: fit-content;
 		padding-block: 0.5rem;

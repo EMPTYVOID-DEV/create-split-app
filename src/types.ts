@@ -8,7 +8,7 @@ export type settings = {
   installPackages: boolean;
 };
 
-export type orm = "base-sqlite" | "prisma" | "drizzle";
+export type orm = "no-orm" | "prisma" | "drizzle";
 
 export type dependencies =
   | "@sveltejs/adapter-node"
@@ -16,7 +16,6 @@ export type dependencies =
   | "@types/better-sqlite3"
   | "@lucia-auth/adapter-prisma"
   | "@lucia-auth/adapter-drizzle"
-  | "@lucia-auth/adapter-sqlite"
   | "@prisma/client"
   | "@types/node"
   | "better-sqlite3"
