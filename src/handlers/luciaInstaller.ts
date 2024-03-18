@@ -12,8 +12,8 @@ export async function luciaInstaller(destDir: string, orm: orm) {
       : orm == "prisma"
       ? path.join(extraSrc, "lucia/lucia.prisma.ts")
       : path.join(extraSrc, "lucia/lucia.drizzle.ts");
-  const authDest = path.join(destDir, authDestPath);
-  const luciaConfigDest = path.join(authDest, "lucia.ts");
+  const authDir = path.join(destDir, authDestPath);
+  const luciaConfigDest = path.join(authDir, "lucia.ts");
   const appTypesSrc = path.join(extraSrc, "pages/app.d.ts");
   const appTypesDest = path.join(destDir, "src/app.d.ts");
   const hookLuciaSrc = path.join(extraSrc, "pages/hook.server.ts");
@@ -21,7 +21,7 @@ export async function luciaInstaller(destDir: string, orm: orm) {
 
   addDependency(["lucia", "oslo"], false, destDir);
   // create the auth dir synchronously
-  fsExtra.mkdirSync(authDest, { recursive: true });
+  fsExtra.mkdirSync(authDir, { recursive: true });
 
   return Promise.allSettled([
     fsExtra.copyFile(luciaConfigSrc, luciaConfigDest),

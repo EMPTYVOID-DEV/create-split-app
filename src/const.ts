@@ -30,6 +30,8 @@ export const databaseDestPath = "src/lib/database";
 
 export const componentsDestPath = "src/lib/components";
 
+export const utilsDestPath = "src/lib/utils";
+
 export const dependencyMap = new Map<dependencies, string>([
   ["@types/express", "^4.17.21"],
   ["@sveltejs/adapter-node", "^5.0.1"],

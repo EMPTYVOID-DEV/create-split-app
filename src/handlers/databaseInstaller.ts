@@ -10,54 +10,56 @@ export async function databaseInstaller(
   orm: orm,
   isLucia: boolean
 ) {
-  const destEnvPath = path.join(destDir, ".env");
-  const srcEnvPath = path.join(extraSrc, "pages/.env");
   const localDbPath = path.join(destDir, "localDB/sqlite.db");
-  fsExtra.copyFileSync(srcEnvPath, destEnvPath);
   fsExtra.createFileSync(localDbPath);
+  writeEnv(destDir, orm == "prisma");
+
   if (orm == "base-sqlite") return baseSqlite(destDir);
   if (orm == "prisma") return primsa(destDir, isLucia);
   if (orm == "drizzle") return drizzle(destDir, isLucia);
 }
 
-async function baseSqlite(destDir: string) {
-  const destPath = path.join(destDir, databaseDestPath, "database.ts");
-  const srcPath = path.join(extraSrc, "pages/database.ts");
-  const databaseDirPath = path.join(destDir, databaseDestPath);
+async function baseSqlite(dirPath: string) {
+  const destFilePath = path.join(dirPath, databaseDestPath, "database.ts");
+  const srcFilePath = path.join(extraSrc, "pages/database.ts");
+  const databaseDir = path.join(dirPath, databaseDestPath);
+
   // creating the database dir
-  fsExtra.mkdirSync(databaseDirPath);
+  fsExtra.mkdirSync(databaseDir);
 
   addDependency(
     ["better-sqlite3", "@lucia-auth/adapter-sqlite"],
     false,
-    destDir
+    dirPath
   );
-  addDependency(["@types/better-sqlite3"], true, destDir);
+  addDependency(["@types/better-sqlite3"], true, dirPath);
+
   return fsExtra
-    .copyFile(srcPath, destPath)
+    .copyFile(srcFilePath, destFilePath)
     .then(() => logger.success("Database configs copied successfully"))
     .catch((e) => logger.error("Failed to copy base-orm configs"));
 }
 
-async function primsa(destDir: string, isLucia: boolean) {
-  const dbFileDestPath = path.join(destDir, databaseDestPath, "database.ts");
+async function primsa(dirPath: string, isLucia: boolean) {
+  const dbFileDestPath = path.join(dirPath, databaseDestPath, "database.ts");
   const dbFileSrcPath = path.join(extraSrc, "prisma/database.ts");
   const schemaSrcPath = isLucia
     ? path.join(extraSrc, "prisma/schema.lucia.prisma")
     : path.join(extraSrc, "prisma/schema.prisma");
-  const schemaDestPath = path.join(destDir, "prisma/schema.prisma");
-  const databaseDirPath = path.join(destDir, databaseDestPath);
-  const prismaDirPath = path.join(destDir, "prisma");
+  const schemaDestPath = path.join(dirPath, "prisma/schema.prisma");
+  const databaseDir = path.join(dirPath, databaseDestPath);
+  const prismaDir = path.join(dirPath, "prisma");
+
   // creating the prisma directory and database dir
-  fsExtra.mkdirSync(prismaDirPath);
-  fsExtra.mkdirSync(databaseDirPath);
+  fsExtra.mkdirSync(prismaDir);
+  fsExtra.mkdirSync(databaseDir);
 
   addDependency(
     ["@prisma/client", "@lucia-auth/adapter-prisma"],
     false,
-    destDir
+    dirPath
   );
-  addDependency(["prisma"], true, destDir);
+  addDependency(["prisma"], true, dirPath);
 
   return Promise.allSettled([
     fsExtra.copyFile(dbFileSrcPath, dbFileDestPath),
@@ -67,25 +69,26 @@ async function primsa(destDir: string, isLucia: boolean) {
     .catch(() => logger.error("Failed to copy prisma configs"));
 }
 
-async function drizzle(destDir: string, isLucia: boolean) {
-  const dbFileDestPath = path.join(destDir, databaseDestPath, "database.ts");
+async function drizzle(dirPath: string, isLucia: boolean) {
+  const dbFileDestPath = path.join(dirPath, databaseDestPath, "database.ts");
   const dbFileSrcPath = path.join(extraSrc, "drizzle/database.ts");
   const configSrcPath = path.join(extraSrc, "config/drizzle.config.ts");
-  const configDestPath = path.join(destDir, "drizzle.config.ts");
+  const configDestPath = path.join(dirPath, "drizzle.config.ts");
   const schemaSrcPath = isLucia
     ? path.join(extraSrc, "drizzle/schema.lucia.ts")
     : path.join(extraSrc, "drizzle/schema.ts");
-  const schemaDestPath = path.join(destDir, databaseDestPath, "schema.ts");
-  const databaseDirPath = path.join(destDir, databaseDestPath);
+  const schemaDestPath = path.join(dirPath, databaseDestPath, "schema.ts");
+  const databaseDir = path.join(dirPath, databaseDestPath);
+
   // creating the database dir
-  fsExtra.mkdirSync(databaseDirPath);
+  fsExtra.mkdirSync(databaseDir);
 
   addDependency(
     ["drizzle-orm", "better-sqlite3", , "@lucia-auth/adapter-drizzle"],
     false,
-    destDir
+    dirPath
   );
-  addDependency(["drizzle-kit", "@types/better-sqlite3"], true, destDir);
+  addDependency(["drizzle-kit", "@types/better-sqlite3"], true, dirPath);
 
   return Promise.allSettled([
     fsExtra.copyFile(dbFileSrcPath, dbFileDestPath),
@@ -94,4 +97,12 @@ async function drizzle(destDir: string, isLucia: boolean) {
   ])
     .then(() => logger.success("Drizzle configs copied successfully"))
     .catch(() => logger.error("Failed to copy drizzle configs"));
+}
+
+function writeEnv(dirPath: string, isPrimsa: boolean) {
+  const env = isPrimsa
+    ? `DB_URL=file:../localDB/sqlite.db`
+    : `DB_URL=localDB/sqlite.db`;
+  const envPath = path.join(dirPath, ".env");
+  fsExtra.writeFileSync(envPath, env);
 }

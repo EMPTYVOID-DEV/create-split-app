@@ -1,20 +1,31 @@
 import nodeAdapter from "@sveltejs/adapter-node";
-import { vitePreprocess } from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { Server } from "socket.io";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://kit.svelte.dev/docs/integrations#preprocessors
-  // for more information about preprocessors
   preprocess: vitePreprocess(),
 
   kit: {
     env: {
       dir: "./",
     },
-    // adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-    // If your environment is not supported or you settled on a specific environment, switch out the adapter.
-    // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: nodeAdapter(),
+    vite: {
+      plugins: [
+        {
+          name: "socket-io",
+          configureServer(server) {
+            const socket = new Server(server.httpServer);
+            socket.on("connection", (socket) => {
+              socket.on("new", () => {
+                socket.emit("message", Math.random() * 1000);
+              });
+            });
+          },
+        },
+      ],
+    },
   },
 };
 

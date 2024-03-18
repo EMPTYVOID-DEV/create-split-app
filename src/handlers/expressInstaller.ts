@@ -1,18 +1,25 @@
 import path from "path";
 import fsExtra from "fs-extra";
 import { PackageJson } from "type-fest";
-import { extraSrc } from "../const.js";
+import { extraSrc, utilsDestPath } from "../const.js";
 import { logger } from "../utils/logger.js";
 import { addDependency } from "../utils/addDependency.js";
 
 export async function expressInstaller(destDir: string) {
-  const expressSrc = path.join(extraSrc, "express");
+  const expressSrcDir = path.join(extraSrc, "express");
   const expressDest = path.join(destDir, "express");
-  const svelteConfigSrc = path.join(
+  const svelteConfigSrcPath = path.join(
     extraSrc,
     "config/svelte.config.express.js"
   );
-  const svelteConfigDest = path.join(destDir, "svelte.config.js");
+  const svelteConfigDestPath = path.join(destDir, "svelte.config.js");
+  const socketPageSrcPath = path.join(extraSrc, "pages/+page.socket.svelte");
+  const socketPageDest = path.join(destDir, "src/routes/+page.svelte");
+  const utilsDir = path.join(destDir, utilsDestPath);
+  const clientSocketSrcPath = path.join(extraSrc, "pages/clientSocket.ts");
+  const clientSocketDestPath = path.join(utilsDir, "clientSocket.ts");
+
+  fsExtra.mkdirSync(utilsDir);
 
   const pkgJsonPath = path.join(destDir, "package.json");
   const pkgJson = fsExtra.readJSONSync(pkgJsonPath) as PackageJson;
@@ -27,8 +34,10 @@ export async function expressInstaller(destDir: string) {
   addDependency(["express", "socket.io", "socket.io-client"], false, destDir);
 
   return Promise.allSettled([
-    fsExtra.copy(expressSrc, expressDest),
-    fsExtra.copyFile(svelteConfigSrc, svelteConfigDest),
+    fsExtra.copyFile(socketPageSrcPath, socketPageDest),
+    fsExtra.copyFile(clientSocketSrcPath, clientSocketDestPath),
+    fsExtra.copy(expressSrcDir, expressDest),
+    fsExtra.copyFile(svelteConfigSrcPath, svelteConfigDestPath),
   ])
     .then(() => logger.success("express configs copied successfully"))
     .catch(() => logger.error("Failed to copy express config"));

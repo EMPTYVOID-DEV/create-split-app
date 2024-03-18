@@ -3,6 +3,10 @@ datasource db {
     url      = env("DB_URL")
 }
 
+generator client {
+    provider = "prisma-client-js"
+}
+
 model table {
     id Int @id @default(autoincrement())
 }

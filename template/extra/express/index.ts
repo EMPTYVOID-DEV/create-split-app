@@ -8,14 +8,13 @@ const httpServer = createServer(app);
 const socket = new Server(httpServer);
 
 socket.on("connection", (socket) => {
-  socket.on("message", (data) => {
-    console.log(data);
-    socket.emit("message", data);
+  socket.on("new", () => {
+    socket.emit("message", Math.random() * 1000);
   });
 });
 
 app.use(handler);
 
-httpServer.listen(5000, () => {
+httpServer.listen(3000, () => {
   console.log("lisening on port 5000");
 });

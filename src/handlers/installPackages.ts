@@ -1,21 +1,20 @@
+import ora from "ora";
 import { execa } from "execa";
 import { getUserPkgManager } from "../utils/getPackageManager.js";
-import { logger } from "../utils/logger.js";
 
 export async function installPackages(destDir: string) {
   const pkgManager = getUserPkgManager();
-  const pkgInstallMessage = pkgManager == "yarn" ? "add" : "install";
+  const spinner = ora(`Installing packages with ${pkgManager}`).start();
+
   try {
-    const chilProcess = execa(pkgManager, [pkgInstallMessage], {
+    const { stdout } = await execa(pkgManager, ["install"], {
       cwd: destDir,
     });
-    chilProcess.stdout?.pipe(process.stdout);
-    await chilProcess;
-    logger.success(`The packages were installed successfully`);
-  } catch (error: any) {
-    if (pkgManager != "pnpm")
-      logger.error(
-        `The cli got this error while installing packages using ${pkgManager} : \n ${error.message} `
-      );
+
+    spinner.succeed(`Packages installed successfully with ${pkgManager}`);
+    console.log(stdout);
+  } catch (error) {
+    spinner.fail(`Failed to install packages with ${pkgManager}`);
+    console.error(error.stderr);
   }
 }
