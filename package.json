@@ -1,6 +1,6 @@
 {
   "name": "create-split-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The Best way to start a sveltekit project.",
   "maintainers": [
     "Aymen keskas <keskasaymen8@gmail.com> (https://empty-void.vercel.app)"
@@ -20,7 +20,7 @@
   "exports": "./dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "split": "./dist/index.js"
+    "create-split-app": "./dist/index.js"
   },
   "type": "module",
   "scripts": {

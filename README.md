@@ -1,3 +1,5 @@
+![splitLogo](./assets/Logo.png)
+
 The **Split Stack CLI Tool** is a command-line utility designed to streamline the process of initializing a sveltekit project with the most up to date tools:
 
 - **TypeScript**: A language that builds on top of JavaScript, adding static type checking to catch errors earlier.
@@ -8,7 +10,19 @@ The **Split Stack CLI Tool** is a command-line utility designed to streamline th
 
 ## Installation
 
-To create a new project, run :
+To setup a split project run one of these commands:
+
+### npm
+
+```bash
+npx create-split-app
+```
+
+### yarn
+
+```bash
+yarn dlx create-split-app
+```
 
 ### pnpm
 

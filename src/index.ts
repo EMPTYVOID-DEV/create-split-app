@@ -23,8 +23,8 @@ async function main() {
   if (lucia) await luciaInstaller(destDir, orm);
   if (orm != "no-orm") await databaseInstaller(destDir, orm, lucia);
   if (express) await expressInstaller(destDir);
-  if (installPackages) await install(destDir);
   if (git) initGit(destDir);
+  if (installPackages) await install(destDir);
 }
 
 main().catch((e) =>
