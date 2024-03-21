@@ -9,15 +9,14 @@ on:
       - master
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-permissions: {} #reset
+permissions: {}
 
 jobs:
   release:
-    # IMPORTANT: prevent this action from running on forks
-    if: github.repository == 'EMPTYVOID-DEV/Split'
+    if: github.repository == 'EMPTYVOID-DEV/create-split-app'
     permissions:
-      contents: write # to create release (changesets/action)
-      pull-requests: write # to create pull request (changesets/action)
+      contents: write
+      pull-requests: write
     name: Release
     runs-on: ubuntu-latest
     strategy:
