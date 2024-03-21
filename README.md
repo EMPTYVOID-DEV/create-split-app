@@ -1,5 +1,3 @@
-Here's an enhanced version of the markdown without using complex words:
-
 ![splitLogo](./assets/Logo.png)
 
 The **Split Stack CLI Tool** is a command-line program designed to make it easy to start a new sveltekit project with the latest tools:
