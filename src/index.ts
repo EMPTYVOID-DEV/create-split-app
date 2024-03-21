@@ -8,8 +8,10 @@ import { tailwindInstaller } from "./handlers/tailwindInstaller.js";
 import { expressInstaller } from "./handlers/expressInstaller.js";
 import { luciaInstaller } from "./handlers/luciaInstaller.js";
 import { databaseInstaller } from "./handlers/databaseInstaller.js";
+import { copyAuth } from "./handlers/copyAuth.js";
 import { installPackages as install } from "./handlers/installPackages.js";
 import { initGit } from "./handlers/initGit.js";
+import { migrateDatabase } from "./handlers/migrateDatabase.js";
 import path from "path";
 import { workingDir } from "./const.js";
 
@@ -23,10 +25,12 @@ async function main() {
   if (lucia) await luciaInstaller(destDir, orm);
   if (orm != "no-orm") await databaseInstaller(destDir, orm, lucia);
   if (express) await expressInstaller(destDir);
+  if (orm != "no-orm" && lucia) await copyAuth(destDir, orm);
   if (git) initGit(destDir);
   if (installPackages) await install(destDir);
+  if (orm != "no-orm" && installPackages) migrateDatabase(destDir, orm);
 }
 
 main().catch((e) =>
-  logger.error(`Unknown error has occured with this message ${e.message}`)
+  logger.error(`Unknown error has occured with this message ${e.message}.`)
 );

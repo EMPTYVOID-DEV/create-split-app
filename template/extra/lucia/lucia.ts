@@ -5,7 +5,7 @@ import { Lucia } from "lucia";
 const adapter = new Adapter();
 
 export const lucia = new Lucia(adapter, {
-  getUserAttributes: (attributes: DatabaseSessionAttributes) => {
+  getUserAttributes: (attributes: DatabaseUserAttributes) => {
     return {
       ...attributes,
     };
@@ -20,7 +20,10 @@ declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
     DatabaseSessionAttributes: DatabaseSessionAttributes;
+    DatabaseUserAttributes: DatabaseUserAttributes;
   }
 }
 
 interface DatabaseSessionAttributes {}
+
+interface DatabaseUserAttributes {}

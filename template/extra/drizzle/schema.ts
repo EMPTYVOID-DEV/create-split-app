@@ -1,5 +1,5 @@
-import { integer, sqliteTable } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const table = sqliteTable("table", {
-  id: integer("id").primaryKey().notNull(),
+export const userTable = sqliteTable("user", {
+  id: text("id").notNull().primaryKey(),
 });

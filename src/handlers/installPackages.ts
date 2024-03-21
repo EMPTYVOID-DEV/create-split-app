@@ -1,6 +1,7 @@
 import ora from "ora";
 import { execa } from "execa";
 import { getUserPkgManager } from "../utils/getPackageManager.js";
+import { logger } from "../utils/logger.js";
 
 export async function installPackages(destDir: string) {
   const pkgManager = getUserPkgManager();
@@ -12,9 +13,9 @@ export async function installPackages(destDir: string) {
     });
 
     spinner.succeed(`Packages installed successfully with ${pkgManager}`);
-    console.log(stdout);
+    logger.info(stdout);
   } catch (error) {
     spinner.fail(`Failed to install packages with ${pkgManager}`);
-    console.error(error.stderr);
+    logger.error(error.stderr);
   }
 }

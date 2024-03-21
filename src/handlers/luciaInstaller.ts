@@ -14,7 +14,7 @@ export async function luciaInstaller(destDir: string, orm: orm) {
       : path.join(extraSrc, "lucia/lucia.drizzle.ts");
   const authDir = path.join(destDir, authDestPath);
   const luciaConfigDest = path.join(authDir, "lucia.ts");
-  const appTypesSrc = path.join(extraSrc, "pages/app.d.ts");
+  const appTypesSrc = path.join(extraSrc, "lucia/app.d.ts");
   const appTypesDest = path.join(destDir, "src/app.d.ts");
   const hookLuciaSrc = path.join(extraSrc, "pages/hook.server.ts");
   const hookLuciaDest = path.join(destDir, "src/hooks.server.ts");

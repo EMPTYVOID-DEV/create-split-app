@@ -15,6 +15,6 @@ socket.on("connection", (socket) => {
 
 app.use(handler);
 
-httpServer.listen(3000, () => {
-  console.log("lisening on port 5000");
+httpServer.listen(5173, () => {
+  console.log("lisening on port 5173");
 });

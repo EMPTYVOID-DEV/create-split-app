@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const distPath = path.dirname(__filename);
 export const PKG_ROOT = path.join(distPath, "../");
 
-export const title = "Split";
+export const title = "create-split-app";
 
 export const defaultSettings: settings = {
   orm: "drizzle",
@@ -52,5 +52,31 @@ export const dependencyMap = new Map<dependencies, string>([
   ["@lucia-auth/adapter-drizzle", "^1.0.4"],
   ["better-sqlite3", "^9.4.3"],
   ["lucia", "^3.1.1"],
+  ["arctic", "^1.2.1"],
   ["oslo", "^1.1.3"],
+]);
+
+export const migrationCommands = new Map<
+  "prisma" | "drizzle",
+  { prepare: string[]; push: string[] }
+>([
+  [
+    "prisma",
+    {
+      prepare: ["prisma", "migrate", "dev", "--name", "initial_migration"],
+      push: ["prisma", "generate"],
+    },
+  ],
+  [
+    "drizzle",
+    {
+      prepare: [
+        "drizzle-kit",
+        "generate:sqlite",
+        "--config",
+        "./drizzle.config.ts",
+      ],
+      push: ["drizzle-kit", "push:sqlite", "--config", "./drizzle.config.ts"],
+    },
+  ],
 ]);

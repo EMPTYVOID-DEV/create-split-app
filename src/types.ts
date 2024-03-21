@@ -22,6 +22,7 @@ export type dependencies =
   | "drizzle-orm"
   | "drizzle-kit"
   | "oslo"
+  | "arctic"
   | "prettier-plugin-tailwindcss"
   | "express"
   | "lucia"
