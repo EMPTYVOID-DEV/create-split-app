@@ -1,16 +1,18 @@
+Here's an enhanced version of the markdown without using complex words:
+
 ![splitLogo](./assets/Logo.png)
 
-The **Split Stack CLI Tool** is a command-line utility designed to streamline the process of initializing a sveltekit project with the most up to date tools:
+The **Split Stack CLI Tool** is a command-line program designed to make it easy to start a new sveltekit project with the latest tools:
 
-- **TypeScript**: A language that builds on top of JavaScript, adding static type checking to catch errors earlier.
-- **Prisma** or **Drizzle**: Tools for managing your database, including creating and updating database schemas.
-- **Lucia**: A library for handling user authentication and authorization.
-- **Tailwind CSS**: A utility-focused CSS framework for styling your application.
-- **Express.js**: A web application framework, which can integrate with Socket.IO for real-time communication.
+- **TypeScript**: A language that builds on top of JavaScript, adding type checking to catch mistakes early.
+- **Prisma** or **Drizzle**: Tools for managing your database, including creating and updating database structures.
+- **Lucia**: A library for handling user sign-in and access control.
+- **Tailwind CSS**: A CSS framework for styling your application.
+- **Express.js**: A web application framework, which can work with Socket.IO for real-time communication.
 
 ## Installation
 
-To setup a split project run one of these commands:
+To set up a split project, run one of these commands:
 
 ### npm
 
@@ -32,7 +34,7 @@ pnpm dlx create-split-app
 
 ## Setup Options
 
-During setup, you'll be prompted to choose which additional tools and packages you want to include:
+During setup, you'll be asked to choose which extra tools and packages you want to include:
 
 1. **Project Location**: Where to create the new project folder.
 2. **Tailwind CSS**: Whether to include the Tailwind CSS styling framework.
@@ -44,9 +46,12 @@ During setup, you'll be prompted to choose which additional tools and packages y
 
 ## Notes
 
-1. If using Lucia without a database tool, update `src/lib/auth/lucia.ts` with your desired adapter.
-2. The CLI uses SQLite as the default database with Prisma or Drizzle. It also includes `better-sqlite3` with Drizzle.
-3. You need to migrate your database schema before use when using Prisma or Drizzle.
+1. If you selected Lucia and `no-orm`, update `src/lib/auth/lucia.ts` with your desired adapter.
+2. The CLI uses SQLite as the default database with Prisma or Drizzle. It also includes `better-sqlite3` for Drizzle.
+3. The CLI will automatically migrate changes to the local SQLite database.
+4. When using Lucia with either Drizzle or Prisma, the CLI will write routes which handle GitHub and email-password authentication.
+5. For GitHub authentication, you need to set two environment variables: `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. Learn more [here](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app).
+6. When working with Socket.IO, if you change the port where the Express server is listening, make sure to update the `dev-express`script. Learn more [here](https://kit.svelte.dev/docs/adapter-node).
 
 ## Contributing
 
