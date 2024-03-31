@@ -1,5 +1,11 @@
 # create-split-app
 
+## 0.1.1
+
+### Patch Changes
+
+- fb8de87: fixing drizzle config to use connectionString not url
+
 ## 0.1.0
 
 ### Minor Changes
