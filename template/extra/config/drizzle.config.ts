@@ -5,6 +5,6 @@ export default {
   out: "./drizzle",
   driver: "better-sqlite",
   dbCredentials: {
-    url: process.env.DB_URL!,
+    connectionString: process.env.DB_URL!,
   },
 } satisfies Config;
