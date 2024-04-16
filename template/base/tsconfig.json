@@ -26,7 +26,15 @@
 		"checkJs": true,
 		"paths": {
 			"$lib/*": ["src/lib/*"],
-			"$lib": ["./src/lib"],	
+			"$lib": ["./src/lib"],
+      "$global": ["./src/lib/global"],
+			"$global/*": ["src/lib/global/*"],
+			"$client": ["./src/lib/client"],
+			"$client/*": ["src/lib/client/*"],
+			"$server": ["./src/lib/server"],
+			"$server/*": ["src/lib/server/*"],
+			"$assets/*": ["src/lib/assets/*"],
+			"$assets": ["./src/lib/assets"],
 			"$/*": ["./src/*"],							 
 			"$app": ["./node_modules/@sveltejs/kit/types"],
 			"$app/*": ["./node_modules/@sveltejs/kit/types/ambient.d.ts"]

@@ -1,24 +1,34 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DB_URL")
+  provider = "sqlite"
+  url      = env("DB_URL")
 }
 
 model User {
-    id             String    @id
-    username       String
-    github_id      Int?      @unique
-    email          String    @unique
-    hashedPassword String?
-    sessions       Session[]
+  id       String    @id
+  username String
+  sessions Session[]
+  Key      Key[]
 }
 
 model Session {
-    id        String   @id
-    userId    String
-    expiresAt DateTime
-    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Key {
+  userId        String
+  provider_id   String
+  provider_name String
+  secret        String
+  verified      Int
+
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@id([provider_id, provider_name])
 }

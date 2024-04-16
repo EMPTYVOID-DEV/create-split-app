@@ -11,6 +11,8 @@ export type settings = {
 export type orm = "no-orm" | "prisma" | "drizzle";
 
 export type dependencies =
+  | "nodemailer"
+  | "@types/nodemailer"
   | "@sveltejs/adapter-node"
   | "@types/express"
   | "@types/better-sqlite3"

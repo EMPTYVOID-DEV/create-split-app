@@ -28,7 +28,9 @@ export async function copyAuth(destDir: string, orm: "drizzle" | "prisma") {
     fsExtra.mkdirSync(utilsDir);
   }
 
-  addDependency(["arctic"], false, destDir);
+  addDependency(["arctic", "nodemailer"], false, destDir);
+
+  addDependency(["@types/nodemailer"], true, destDir);
 
   return Promise.allSettled([
     fsExtra.copyFile(githubSourcePath, githubDestinationPath),
