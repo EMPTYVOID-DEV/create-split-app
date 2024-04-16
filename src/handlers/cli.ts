@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { settings } from "../types.js";
+import { orm, settings } from "../types.js";
 import { defaultSettings } from "../const.js";
 import { validateProjectName } from "../utils/validateName.js";
 
@@ -8,7 +8,7 @@ export async function cli(): Promise<settings> {
   settings.name = await namePrompt();
   settings.tailwind = await tailwind();
   settings.lucia = await lucia();
-  settings.orm = await database();
+  settings.orm = await database(settings.lucia);
   settings.express = await express();
   settings.git = await git();
   settings.installPackages = await installPackages();
@@ -77,13 +77,15 @@ async function express() {
   return isExpress;
 }
 
-async function database() {
+async function database(isLucia: boolean) {
+  const choices: orm[] = ["prisma", "drizzle"];
+  if (!isLucia) choices.push("no-orm");
   const { database } = await inquirer.prompt<{
-    database: "no-orm" | "prisma" | "drizzle";
+    database: "prisma" | "drizzle";
   }>({
     name: "database",
     type: "list",
-    choices: ["no-orm", "prisma", "drizzle"],
+    choices,
     message: "Which orm you want to use",
     default: defaultSettings.orm,
   });

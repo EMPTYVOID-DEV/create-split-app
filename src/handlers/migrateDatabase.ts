@@ -25,6 +25,6 @@ export async function migrateDatabase(
     logger.info(output);
   } catch (error) {
     spinner.fail("Failed to migrate the schema to the database.");
-    logger.error(error.stderr);
+    logger.error(error.stdout);
   }
 }

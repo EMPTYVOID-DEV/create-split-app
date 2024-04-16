@@ -5,9 +5,6 @@
   "maintainers": [
     "Aymen keskas <keskasaymen8@gmail.com> (https://empty-void.vercel.app)"
   ],
-  "engines": {
-    "node": ">=18.x"
-  },
   "settings": {
     "autoInstallPeers": false
   },

@@ -1,7 +1,6 @@
 import path from "path";
 import fsExtra from "fs-extra";
 import { PackageJson } from "type-fest";
-import { dependencyMap } from "../const.js";
 import { dependencies } from "../types.js";
 
 export function addDependency(
@@ -13,9 +12,9 @@ export function addDependency(
   const pkgJson = fsExtra.readJsonSync(pkgJsonPath) as PackageJson;
   for (const dependency of dependencies) {
     if (devMode) {
-      pkgJson.devDependencies[dependency] = dependencyMap.get(dependency);
+      pkgJson.devDependencies[dependency] = "*";
     } else {
-      pkgJson.dependencies[dependency] = dependencyMap.get(dependency);
+      pkgJson.dependencies[dependency] = "*";
     }
   }
   fsExtra.writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2 });

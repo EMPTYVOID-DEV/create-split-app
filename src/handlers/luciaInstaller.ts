@@ -2,14 +2,14 @@ import path from "path";
 import fsExtra from "fs-extra";
 import { extraSrc, authDestPath } from "../const.js";
 import { logger } from "../utils/logger.js";
-import { orm } from "../types.js";
 import { addDependency } from "../utils/addDependency.js";
 
-export async function luciaInstaller(destDir: string, orm: orm) {
+export async function luciaInstaller(
+  destDir: string,
+  orm: "drizzle" | "prisma"
+) {
   const luciaConfigSrc =
-    orm == "no-orm"
-      ? path.join(extraSrc, "lucia/lucia.ts")
-      : orm == "prisma"
+    orm == "prisma"
       ? path.join(extraSrc, "lucia/lucia.prisma.ts")
       : path.join(extraSrc, "lucia/lucia.drizzle.ts");
   const authDir = path.join(destDir, authDestPath);

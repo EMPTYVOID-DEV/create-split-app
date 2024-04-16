@@ -11,7 +11,6 @@ import { databaseInstaller } from "./handlers/databaseInstaller.js";
 import { copyAuth } from "./handlers/copyAuth.js";
 import { installPackages as install } from "./handlers/installPackages.js";
 import { initGit } from "./handlers/initGit.js";
-import { migrateDatabase } from "./handlers/migrateDatabase.js";
 import path from "path";
 import { workingDir } from "./const.js";
 
@@ -22,15 +21,13 @@ async function main() {
   const destDir = path.join(workingDir, name);
   await createBase(destDir);
   if (tailwind) await tailwindInstaller(destDir);
-  if (lucia) await luciaInstaller(destDir, orm);
+  if (orm != "no-orm" && lucia) await luciaInstaller(destDir, orm);
   if (orm != "no-orm") await databaseInstaller(destDir, orm, lucia);
   if (express) await expressInstaller(destDir);
   if (orm != "no-orm" && lucia) await copyAuth(destDir, orm);
   if (git) initGit(destDir);
-  if (installPackages) await install(destDir);
-  if (orm != "no-orm" && installPackages) migrateDatabase(destDir, orm);
+  if (installPackages) await install(destDir, orm);
 }
-
 main().catch((e) =>
   logger.error(`Unknown error has occured with this message ${e.message}.`)
 );

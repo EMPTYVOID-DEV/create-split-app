@@ -2,6 +2,7 @@ import fsExtra from "fs-extra";
 import inquirer from "inquirer";
 import { logger } from "../utils/logger.js";
 import { baseSrc as srcDir } from "../const.js";
+import { addDependency } from "../utils/addDependency.js";
 
 export async function createBase(destDir: string) {
   const doesItExist = fsExtra.existsSync(destDir);
@@ -12,8 +13,33 @@ export async function createBase(destDir: string) {
       process.exit(0);
     } else if (writingOption == "Clear") fsExtra.emptyDirSync(destDir);
   }
+
   return fsExtra
     .copy(srcDir, destDir)
+    .then(() => {
+      addDependency(
+        [
+          "@sveltejs/adapter-auto",
+          "@sveltejs/kit",
+          "@sveltejs/vite-plugin-svelte",
+          "@types/eslint",
+          "@typescript-eslint/eslint-plugin",
+          "@typescript-eslint/parser",
+          "eslint",
+          "eslint-config-prettier",
+          "eslint-plugin-svelte",
+          "prettier",
+          "prettier-plugin-svelte",
+          "svelte",
+          "svelte-check",
+          "tslib",
+          "typescript",
+          "vite",
+        ],
+        true,
+        destDir
+      );
+    })
     .then(() => logger.success("The base project was copied successfully"))
     .catch((e) => {
       logger.error("Failed to copy the base project");

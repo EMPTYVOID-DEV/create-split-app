@@ -19,7 +19,6 @@ export async function databaseInstaller(
       ? `DB_URL=file:../localDB/sqlite.db`
       : `DB_URL=localDB/sqlite.db`;
   writeEnv(destDir, env);
-
   if (orm == "prisma") return primsa(destDir, isLucia);
   if (orm == "drizzle") return drizzle(destDir, isLucia);
 }
