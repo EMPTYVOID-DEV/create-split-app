@@ -1,7 +1,7 @@
 import path from "path";
 import fsExtra from "fs-extra";
 import { PackageJson } from "type-fest";
-import { extraSrc, utilsDestPath } from "../const.js";
+import { extraSrc, clientUtilsDestPath } from "../const.js";
 import { logger } from "../utils/logger.js";
 import { addDependency } from "../utils/addDependency.js";
 import { addScript } from "../utils/addScripts.js";
@@ -14,7 +14,7 @@ export async function expressInstaller(destDir: string) {
     extraSrc,
     "config/svelte.config.express.js"
   );
-  const utilsDir = path.join(destDir, utilsDestPath);
+  const utilsDir = path.join(destDir, clientUtilsDestPath);
   const viteConfigSrcPath = path.join(
     extraSrc,
     "config/vite.config.express.ts"
@@ -23,7 +23,7 @@ export async function expressInstaller(destDir: string) {
   const socketIoPluginSrcPath = path.join(extraSrc, "socketio/socketPlugin.ts");
   const socketIoPluginDestPath = path.join(destDir, "socketPlugin.ts");
   const svelteConfigDestPath = path.join(destDir, "svelte.config.js");
-  const socketPageSrcPath = path.join(extraSrc, "pages/+page.socket.svelte");
+  const socketPageSrcPath = path.join(extraSrc, "other/+page.socket.svelte");
   const socketPageDestPath = path.join(destDir, "src/routes/+page.svelte");
   const clientSocketSrcPath = path.join(extraSrc, "socketio/clientSocket.ts");
   const clientSocketDestPath = path.join(utilsDir, "clientSocket.ts");

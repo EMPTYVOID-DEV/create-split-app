@@ -1,8 +1,10 @@
-import { db } from "$server/database/database";
-import { keyTable } from "$server/database/schema";
-import { createSession } from "$server/utils/authUtils";
-import { insertUser } from "$server/utils/databaseUtils";
-import type { key, user } from "$server/types.server";
+import { db } from "$lib/server/database/database";
+import { userTable, keyTable } from "$lib/server/database/schema";
+import {
+  createSession,
+  verifyEmail,
+  verifyPassword,
+} from "$lib/server/utils/authUtils";
 import { error, type Actions, redirect } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
 import { generateId } from "lucia";
@@ -15,30 +17,36 @@ export const actions: Actions = {
     const username = fd.get("username").toString();
     const email = fd.get("email").toString();
     const password = fd.get("password").toString();
-    if (username.lenght < 4)
+    if (username.length < 4)
       return fail(403, {
         message: "Username should contain at least 4 characters",
       });
-    if (verifyEmail(email)) return fail(403, { message: "Invalid email" });
-    if (verifyPassword(password))
-      return fail(403, { message: "Invalid password" });
+    if (!verifyEmail(email)) return fail(403, { message: "Invalid email" });
+    if (!verifyPassword(password))
+      return fail(403, {
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)",
+      });
     const id = generateId(8);
     const hashedPassword = await new Argon2id().hash(password);
-    const newUser: user = {
+    const newUser = {
       id,
       username,
     };
-    const key: key = {
+    const key = {
       provider_name: "email",
       provider_id: email,
       userId: id,
       secret: hashedPassword,
-      verified: false,
+      verified: 0,
     };
     try {
-      await insertUser(newUser, key);
-    } catch (error) {
-      if (error.code === "23505")
+      await db.transaction(async (tx) => {
+        await tx.insert(userTable).values(newUser);
+        await tx.insert(keyTable).values(key);
+      });
+    } catch (err) {
+      if (err.code === "SQLITE_CONSTRAINT_PRIMARYKEY")
         return fail(409, {
           message: "It seems that this account already exist.",
         });
@@ -50,9 +58,12 @@ export const actions: Actions = {
     const fd = await request.formData();
     const email = fd.get("email").toString();
     const password = fd.get("password").toString();
-    if (verifyEmail(email)) return fail(403, { message: "Invalid email" });
-    if (verifyPassword(password))
-      return fail(403, { message: "Invalid password" });
+    if (!verifyEmail(email)) return fail(403, { message: "Invalid email" });
+    if (!verifyPassword(password))
+      return fail(403, {
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)",
+      });
     const userKey = await db.query.keyTable
       .findFirst({
         where: and(
@@ -65,24 +76,13 @@ export const actions: Actions = {
       return fail(404, { message: "It seems the user does not exist." });
     const isValid = await new Argon2id().verify(userKey.secret, password);
     if (!isValid) return fail(403, { message: "The password is not correct." });
-    // in case the user has verified his account create a session and redirect him to dashboard
-    if (userKey.verified) {
+    // in case the user has verified his account create a session and redirect him to account page
+    if (userKey.verified == 1) {
       await createSession(cookies, userKey.userId).catch(() =>
         error(500, "Service unavailable")
       );
-      redirect(302, "/account/dashboard");
+      redirect(302, "/");
     }
     redirect(302, `/auth/email-verification/${email}`);
   },
 };
-
-function verifyEmail(email: string) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function verifyPassword(password: string) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
-}

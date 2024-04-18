@@ -1,13 +1,16 @@
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
-import { db } from "$server/database/database";
-import { keyTable } from "$server/database/schema";
+import { db } from "$lib/server/database/database";
+import { keyTable, userTable } from "$lib/server/database/schema";
 import { fetchGithubUser, createSession } from "$lib/server/utils/authUtils";
 import type { RequestEvent } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
 import { github } from "$lib/server/auth/github";
-import type { GithubUser, key, user } from "$server/types.server";
-import { insertUser } from "$lib/server/utils/databaseUtils";
+
+type GithubUser = {
+  id: number;
+  login: string;
+};
 
 export async function GET(event: RequestEvent): Promise<Response> {
   const code = event.url.searchParams.get("code");
@@ -34,22 +37,26 @@ export async function GET(event: RequestEvent): Promise<Response> {
       await createSession(event.cookies, userKey.userId);
     } else {
       const id = generateId(8);
-      const newUser: user = {
+      const newUser = {
         id,
         username: githubUser.login,
       };
-      const key: key = {
+      const key = {
         provider_name: "github",
         provider_id: githubUser.id.toString(),
         userId: id,
       };
-      await insertUser(newUser, key);
+      await db.transaction(async (tx) => {
+        await tx.insert(userTable).values(newUser);
+        await tx.insert(keyTable).values(key);
+      });
+
       await createSession(event.cookies, id);
     }
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/account/dashboard",
+        Location: "/account",
       },
     });
   } catch (e) {

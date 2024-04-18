@@ -1,25 +1,13 @@
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
-import { db } from "$lib/database/database";
-import {
-  fetchGithubEmail,
-  fetchGithubUser,
-  createSession,
-} from "$lib/utils/authUtils";
+import { db } from "$lib/server/database/database";
+import { fetchGithubUser, createSession } from "$lib/server/utils/authUtils";
 import type { RequestEvent } from "@sveltejs/kit";
-import { github } from "$lib/auth/github";
+import { github } from "$lib/server/auth/github";
 
 type GithubUser = {
   id: number;
   login: string;
-  email: string;
-};
-
-type GithubEmail = {
-  email: string;
-  primary: boolean;
-  verified: boolean;
-  visibility: string | null;
 };
 
 export async function GET(event: RequestEvent): Promise<Response> {
@@ -28,42 +16,56 @@ export async function GET(event: RequestEvent): Promise<Response> {
   const storedState = event.cookies.get("github_oauth_state") ?? null;
 
   if (!code || !state || !storedState || state !== storedState) {
-    return new Response(null, { status: 400 });
+    return new Response(null, {
+      status: 400,
+    });
   }
 
   try {
     const tokens = await github.validateAuthorizationCode(code);
     const githubUser: GithubUser = await fetchGithubUser(tokens);
-    const existingUser = await db.user.findUnique({
-      where: { github_id: githubUser.id },
+    const userKey = await db.key.findUnique({
+      where: {
+        provider_id_provider_name: {
+          provider_id: githubUser.id.toString(),
+          provider_name: "github",
+        },
+      },
     });
 
-    if (existingUser) {
-      await createSession(
-        event.cookies,
-        { httpOnly: true, path: "/" },
-        existingUser.id
-      );
+    if (userKey) {
+      await createSession(event.cookies, userKey.userId);
     } else {
-      const githubEmail: GithubEmail[] = await fetchGithubEmail(tokens);
-      const primaryEmail = githubEmail.find((el) => el.primary);
-      const userId = generateId(12);
+      const id = generateId(8);
       await db.user.create({
         data: {
-          id: userId,
-          github_id: githubUser.id,
+          id,
           username: githubUser.login,
-          email: primaryEmail.email,
+          Key: {
+            create: {
+              provider_name: "github",
+              provider_id: githubUser.id.toString(),
+            },
+          },
         },
       });
-      await createSession(event.cookies, { httpOnly: true, path: "/" }, userId);
-    }
 
-    return new Response(null, { status: 302, headers: { Location: "/" } });
+      await createSession(event.cookies, id);
+    }
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/account",
+      },
+    });
   } catch (e) {
     if (e instanceof OAuth2RequestError) {
-      return new Response(null, { status: 400 });
+      return new Response(null, {
+        status: 400,
+      });
     }
-    return new Response(null, { status: 500 });
+    return new Response(null, {
+      status: 500,
+    });
   }
 }

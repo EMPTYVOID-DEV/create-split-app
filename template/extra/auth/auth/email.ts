@@ -1,23 +1,25 @@
-import { MAIL_KEY, API_EMAIL } from "$env/static/private";
-import type { mailOptions } from "$server/types.server";
+import { API_EMAIL } from "$env/static/private";
 import { createTransport } from "nodemailer";
 
-export async function sendVerificationEmail(email: string, code: string) {
+type mailOptions = {
+  from: string;
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+};
+
+export async function sendVerificationEmail(email: string, text: string) {
   const transport = createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    auth: {
-      user: API_EMAIL,
-      pass: MAIL_KEY,
-    },
+    host: "0.0.0.0",
+    port: 1025,
   });
 
   const mailOptions: mailOptions = {
     from: API_EMAIL,
     subject: "Email verification",
     to: email,
-    text: code,
+    text,
   };
   return transport.sendMail(mailOptions);
 }
-2;

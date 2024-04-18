@@ -3,19 +3,13 @@ import adapter from '@sveltejs/adapter-auto';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess:vitePreprocess(),		
-	alias: {
-			$global: path.resolve('./src/lib/global'),
-			$client: path.resolve('./src/lib/client'),
-			$server: path.resolve('./src/lib/server'),
-			$assets: path.resolve('./src/lib/assets')
-		},
+	preprocess: vitePreprocess(),
 	kit: {
 		env: {
 			dir: './'
 		},
-		adapter:adapter(),
-	}	
+		adapter: adapter()
+	}
 };
 
 export default config;

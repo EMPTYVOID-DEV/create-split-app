@@ -1,4 +1,4 @@
-import { lucia } from "$server/auth/lucia";
+import { lucia } from "$lib/server/auth/lucia";
 import type { Cookies } from "@sveltejs/kit";
 import type { GitHubTokens } from "arctic";
 
@@ -18,4 +18,15 @@ export async function fetchGithubUser(tokens: GitHubTokens) {
     },
   });
   return githubUserResponse.json();
+}
+
+export function verifyEmail(email: string): boolean {
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return emailRegex.test(email);
+}
+
+export function verifyPassword(password: string): boolean {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
 }

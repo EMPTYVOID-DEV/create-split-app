@@ -24,13 +24,13 @@ export const extraSrc = path.join(PKG_ROOT, "template/extra");
 
 export const baseSrc = path.join(PKG_ROOT, "template/base");
 
-export const authDestPath = "src/lib/auth";
+export const authDestPath = "src/lib/server/auth";
 
-export const databaseDestPath = "src/lib/database";
+export const databaseDestPath = "src/lib/server/database";
 
-export const componentsDestPath = "src/lib/components";
+export const serverUtilsDestPath = "src/lib/server/utils";
 
-export const utilsDestPath = "src/lib/utils";
+export const clientUtilsDestPath = "src/lib/client/utils";
 
 export const migrationCommands = new Map<
   "prisma" | "drizzle",

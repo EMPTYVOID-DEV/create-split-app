@@ -11,6 +11,8 @@ export type settings = {
 export type orm = "no-orm" | "prisma" | "drizzle";
 
 export type dependencies =
+  | "@types/otp-generator"
+  | "otp-generator"
   | "nodemailer"
   | "@types/nodemailer"
   | "@sveltejs/adapter-node"
@@ -48,5 +50,6 @@ export type dependencies =
   | "svelte"
   | "svelte-check"
   | "tslib"
+  | "maildev"
   | "typescript"
   | "vite";

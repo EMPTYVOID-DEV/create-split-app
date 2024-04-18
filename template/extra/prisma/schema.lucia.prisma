@@ -25,8 +25,8 @@ model Key {
   userId        String
   provider_id   String
   provider_name String
-  secret        String
-  verified      Int
+  secret        String?
+  verified      Int?
 
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 

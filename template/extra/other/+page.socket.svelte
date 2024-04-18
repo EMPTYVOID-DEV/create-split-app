@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { io } from "$lib/utils/clientSocket";
+  import { io } from "$lib/client/utils/clientSocket";
   import { onMount } from "svelte";
   let messages = [];
   onMount(() => {

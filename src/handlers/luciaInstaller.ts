@@ -16,7 +16,7 @@ export async function luciaInstaller(
   const luciaConfigDest = path.join(authDir, "lucia.ts");
   const appTypesSrc = path.join(extraSrc, "lucia/app.d.ts");
   const appTypesDest = path.join(destDir, "src/app.d.ts");
-  const hookLuciaSrc = path.join(extraSrc, "pages/hook.server.ts");
+  const hookLuciaSrc = path.join(extraSrc, "other/hook.server.ts");
   const hookLuciaDest = path.join(destDir, "src/hooks.server.ts");
 
   addDependency(["lucia", "oslo"], false, destDir);

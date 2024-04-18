@@ -1,40 +1,52 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 
-	export let form: string;
-	let action: 'signin' | 'signup' = 'signup';
+	export let form: { message: string };
+	let action: 'sign in' | 'sign up' = 'sign up';
 </script>
 
 <div class="auth">
 	<form class="auth-form" method="post" action="?/{action}" use:enhance>
-		{#if action == 'signup'}
+		{#if action == 'sign up'}
 			<input class="auth-input" type="text" name="username" placeholder="Username" />
 		{/if}
 		<input class="auth-input" type="email" name="email" placeholder="Email" />
 		<input class="auth-input" type="password" name="password" placeholder="Password" />
-		<button class="auth-btn" type="submit">{action === 'signup' ? 'Sign Up' : 'Sign In'}</button>
-		<span class="error">{form || ''}</span>
+		<button class="auth-btn" type="submit">{action === 'sign up' ? 'Sign Up' : 'Sign In'}</button>
+		{#if form}
+			<span class="error">{form.message}</span>
+		{/if}
 	</form>
 
 	<div class="change-action">
-		{#if action == 'signup'}
+		{#if action == 'sign up'}
 			<span
 				>Already have an account <button
 					class="change-action-btn"
-					on:click={() => (action = 'signin')}>Sign In</button
+					on:click={() => (action = 'sign in')}>Sign In</button
 				></span
 			>
 		{:else}
 			<span
 				>Don't have an account <button
 					class="change-action-btn"
-					on:click={() => (action = 'signup')}>Sign Up</button
+					on:click={() => (action = 'sign up')}>Sign Up</button
+				></span
+			>
+			<span
+				>Forget your password <button
+					class="change-action-btn"
+					on:click={() => goto('/auth/password-reset')}
+				>
+					Reset it</button
 				></span
 			>
 		{/if}
 	</div>
 
-	<a href="/auth/github" class="github">{action == 'signin' ? 'Sign in' : 'Sign up'} with GitHub</a>
+	<a href="/auth/github" class="github">{action == 'sign in' ? 'Sign in' : 'Sign up'} with GitHub</a
+	>
 </div>
 
 <style>
@@ -45,14 +57,14 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		gap: 0.75rem;
 	}
 
 	.auth-form {
-		width: 30%;
+		width: 60%;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		margin-bottom: 2rem;
 	}
 
 	.auth-input {
@@ -88,7 +100,8 @@
 	}
 
 	.change-action {
-		margin-bottom: 1rem;
+		display: flex;
+		flex-direction: column;
 		font-size: 0.9rem;
 	}
 

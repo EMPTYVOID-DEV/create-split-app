@@ -15,7 +15,7 @@ export async function tailwindInstaller(destDir: string) {
   let tailwindDest = path.join(destDir, "tailwind.config.cjs");
   let postcssDest = path.join(destDir, "postcss.config.cjs");
   let tailwindPrettierDest = path.join(destDir, ".prettierrc");
-  let tailwindCssSrc = path.join(extraSrc, "pages/tailwindAppCss.css");
+  let tailwindCssSrc = path.join(extraSrc, "other/tailwindAppCss.css");
   let tailwindCssDest = path.join(destDir, "src/app.css");
 
   const pkgJsonPath = path.join(destDir, "package.json");

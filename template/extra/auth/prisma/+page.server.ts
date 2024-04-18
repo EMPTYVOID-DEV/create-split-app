@@ -1,84 +1,87 @@
-import { db } from "$lib/database/database";
-import { createSession } from "$lib/utils/authUtils";
+import { db } from "$lib/server/database/database";
+import {
+  createSession,
+  verifyEmail,
+  verifyPassword,
+} from "$lib/server/utils/authUtils";
 import { error, type Actions, redirect } from "@sveltejs/kit";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
+import { fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
-  signup: async ({ request, cookies }) => {
+  "sign up": async ({ request }) => {
     const fd = await request.formData();
     const username = fd.get("username").toString();
     const email = fd.get("email").toString();
     const password = fd.get("password").toString();
-
-    if (!verifyEmail(email)) return "You should enter a valid email.";
+    if (username.length < 4)
+      return fail(403, {
+        message: "Username should contain at least 4 characters",
+      });
+    if (!verifyEmail(email)) return fail(403, { message: "Invalid email" });
     if (!verifyPassword(password))
-      return "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
-
+      return fail(403, {
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)",
+      });
+    const id = generateId(8);
+    const hashedPassword = await new Argon2id().hash(password);
     try {
-      const userId = generateId(12);
-      const hashedPassword = await new Argon2id().hash(password);
       await db.user.create({
         data: {
-          id: userId,
+          id,
           username,
-          email,
-          hashedPassword,
+          Key: {
+            create: {
+              provider_name: "email",
+              provider_id: email,
+              secret: hashedPassword,
+              verified: 0,
+            },
+          },
         },
       });
-      await createSession(cookies, { httpOnly: true, path: "/" }, userId);
     } catch (err) {
       if (err.code === "P2002")
-        return "It seems that this account already exist";
+        return fail(409, {
+          message: "It seems that this account already exist.",
+        });
       error(500, "Service unavailable");
     }
-    redirect(302, "/");
+    redirect(302, `/auth/email-verification/${email}`);
   },
-
-  signin: async ({ cookies, request }) => {
+  "sign in": async ({ cookies, request }) => {
     const fd = await request.formData();
     const email = fd.get("email").toString();
     const password = fd.get("password").toString();
-
-    if (!verifyEmail(email)) return "You should enter a valid email.";
+    if (!verifyEmail(email)) return fail(403, { message: "Invalid email" });
     if (!verifyPassword(password))
-      return "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
-
-    try {
-      const existingUser = await db.user.findUnique({
-        where: { email },
+      return fail(403, {
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)",
       });
-
-      // here the user may have an account but it was created through github auth
-      if (!existingUser || !existingUser.hashedPassword)
-        return "It seems the user does not exist.";
-
-      const isValid = await new Argon2id().verify(
-        existingUser.hashedPassword,
-        password
+    const userKey = await db.key
+      .findUnique({
+        where: {
+          provider_id_provider_name: {
+            provider_id: email,
+            provider_name: "email",
+          },
+        },
+      })
+      .catch(() => error(500, "Service unavailable"));
+    if (!userKey)
+      return fail(404, { message: "It seems the user does not exist." });
+    const isValid = await new Argon2id().verify(userKey.secret, password);
+    if (!isValid) return fail(403, { message: "The password is not correct." });
+    // in case the user has verified his account create a session and redirect him to account page
+    if (userKey.verified == 1) {
+      await createSession(cookies, userKey.userId).catch(() =>
+        error(500, "Service unavailable")
       );
-
-      if (!isValid) return "Your password is not correct";
-
-      await createSession(
-        cookies,
-        { httpOnly: true, path: "/" },
-        existingUser.id
-      );
-    } catch (err) {
-      error(500, "Service unavailable");
+      redirect(302, "/");
     }
-    redirect(302, "/");
+    redirect(302, `/auth/email-verification/${email}`);
   },
 };
-
-function verifyEmail(email: string) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function verifyPassword(password: string) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
-}
