@@ -1,5 +1,11 @@
 # create-split-app
 
+## 0.2.1
+
+### Patch Changes
+
+- 1fc6d7e: creating the lib folder at runtime since npm wont include empty folders in dist
+
 ## 0.2.0
 
 ### Minor Changes
