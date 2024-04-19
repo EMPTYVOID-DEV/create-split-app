@@ -1,6 +1,6 @@
 {
   "name": "create-split-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The Best way to start a sveltekit project.",
   "maintainers": [
     "Aymen keskas <keskasaymen8@gmail.com> (https://empty-void.vercel.app)"
