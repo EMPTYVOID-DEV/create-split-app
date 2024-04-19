@@ -13,6 +13,7 @@ import { installPackages as install } from "./handlers/installPackages.js";
 import { initGit } from "./handlers/initGit.js";
 import path from "path";
 import { workingDir } from "./const.js";
+import fsExtra from "fs-extra";
 
 async function main() {
   welcome();

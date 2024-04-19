@@ -3,6 +3,7 @@ import inquirer from "inquirer";
 import { logger } from "../utils/logger.js";
 import { baseSrc as srcDir } from "../const.js";
 import { addDependency } from "../utils/addDependency.js";
+import path from "path";
 
 export async function createBase(destDir: string) {
   const doesItExist = fsExtra.existsSync(destDir);
@@ -16,6 +17,13 @@ export async function createBase(destDir: string) {
 
   return fsExtra
     .copy(srcDir, destDir)
+    .then(() => {
+      fsExtra.mkdir(path.join(destDir, "src/lib"));
+      fsExtra.mkdirSync(path.join(destDir, "src/lib/assets"));
+      fsExtra.mkdirSync(path.join(destDir, "src/lib/client"));
+      fsExtra.mkdirSync(path.join(destDir, "src/lib/server"));
+      fsExtra.mkdirSync(path.join(destDir, "src/lib/global"));
+    })
     .then(() => {
       addDependency(
         [
