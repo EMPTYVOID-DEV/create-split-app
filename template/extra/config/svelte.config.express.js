@@ -8,7 +8,9 @@ const config = {
     env: {
       dir: "./",
     },
-    adapter: nodeAdapter(),
+    adapter: nodeAdapter({
+      out: "./express/build",
+    }),
   },
 };
 

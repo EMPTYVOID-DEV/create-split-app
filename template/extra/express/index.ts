@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import express from "express";
 import { Server } from "socket.io";
-import { handler } from "../build/handler.js";
+import { handler } from "./build/handler.js";
 
 const app = express();
 const httpServer = createServer(app);

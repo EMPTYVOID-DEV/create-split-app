@@ -69,10 +69,10 @@
 
 	.auth-input {
 		padding: 0.5rem;
-		border: 1px solid #000000;
+		border: 2px solid #121212;
 		border-radius: 0.25rem;
 		font-size: 1rem;
-		outline: none;
+		outline: none;		
 	}
 
 	.auth-input:focus {
@@ -81,13 +81,12 @@
 
 	.auth-btn {
 		padding: 0.75rem 1.5rem;
-		background-color: #3498dbb9;
+		background-color: #3498db;
 		color: #fff;
 		border: none;
 		border-radius: 0.25rem;
 		font-weight: 500;
 		cursor: pointer;
-		transition: background-color 0.2s ease-in-out;
 	}
 
 	.error {
@@ -95,9 +94,6 @@
 		color: #ff0000;
 	}
 
-	.auth-btn:hover {
-		background-color: #3498db;
-	}
 
 	.change-action {
 		display: flex;
@@ -111,23 +107,18 @@
 		color: #3498db;
 		font-weight: 500;
 		cursor: pointer;
-		transition: color 0.2s ease-in-out;
 	}
 
 	.github {
 		display: inline-block;
 		padding: 0.75rem 1.5rem;
-		background-color: #000000b9;
+		background-color: #121212;
 		color: #fff;
 		text-decoration: none;
 		border-radius: 0.25rem;
 		font-weight: 500;
-		transition: background-color 0.2s ease-in-out;
 	}
 
-	.github:hover {
-		background-color: #000000;
-	}
 
 	@media screen and (width<768px) {
 		.auth-form {

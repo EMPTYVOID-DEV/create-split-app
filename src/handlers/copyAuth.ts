@@ -26,10 +26,7 @@ export async function copyAuth(destDir: string, orm: "drizzle" | "prisma") {
   );
 
   const utilsDir = path.join(destDir, serverUtilsDestPath);
-
-  if (!fsExtra.existsSync(utilsDir)) {
-    fsExtra.mkdirSync(utilsDir);
-  }
+  fsExtra.mkdirSync(utilsDir);
 
   addDependency(
     ["maildev", "arctic", "nodemailer", "otp-generator"],

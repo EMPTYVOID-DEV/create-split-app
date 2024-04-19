@@ -1,10 +1,13 @@
+import plugin from "tailwindcss/plugin";
+
 /** @type {import('tailwindcss').Config} */
-/* default font sizes polled from https://websemantics.uk/tools/responsive-font-calculator/
-	 responsive font sizes for screens between 768px-1920px
-	 */
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
+
   theme: {
+    screens: {
+      md: { max: "764px" },
+    },
     extend: {
       colors: {
         primaryColor: "#3498db",
@@ -14,6 +17,13 @@ export default {
         dangerColor: "#ff0000",
         successColor: "#27cf22",
         mutedColor: "#505050",
+      },
+      borderRadius: {
+        bdr: "0.3rem",
+      },
+      fontFamily: {
+        headingFont: "Arial, Helvetica, sans-serif",
+        bodyFont: "Verdana, Geneva, Tahoma, sans-serif",
       },
       fontSize: {
         huge: "clamp(3.8rem, calc(3.8rem + ((1vw - 0.48rem) * 1.3889)), 4.8rem)",
@@ -34,5 +44,36 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addBase, theme }) => {
+      addBase({
+        h1: {
+          fontSize: theme("fontSize.h1"),
+          lineHeight: theme("lineHeight.lh1"),
+        },
+        h2: {
+          fontSize: theme("fontSize.h2"),
+          lineHeight: theme("lineHeight.lh2"),
+        },
+        h3: {
+          fontSize: theme("fontSize.h3"),
+          lineHeight: theme("lineHeight.lh3"),
+        },
+        h4: {
+          fontSize: theme("fontSize.h4"),
+          lineHeight: theme("lineHeight.lh4"),
+        },
+        "label, code, span, li, p, i": {
+          fontFamily: theme("fontFamily.bodyFont"),
+          fontSize: theme("fontSize.body"),
+          fontWeight: "400",
+          lineHeight: theme("lineHeight.lhbody"),
+        },
+        "h1,h2,h3,h4": {
+          fontFamily: theme("fontFamily.headingFont"),
+          fontWeight: "700",
+        },
+      });
+    }),
+  ],
 };

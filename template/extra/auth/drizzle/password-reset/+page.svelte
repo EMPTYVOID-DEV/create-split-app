@@ -93,6 +93,13 @@
 		word-break: break-all;
 	}
 
+	.wrapper input{
+		border: 2px solid #121212;
+	}
+	.wrapper input:focus{
+		border: 2px solid #3498db;
+	}
+
 	.wrapper input,
 	.wrapper button {
 		padding: 0.5rem 1rem;
@@ -105,7 +112,6 @@
 		color: white;
 		border: none;
 		cursor: pointer;
-		transition: background-color 0.3s ease;
 	}
 	.error {
 		font-size: 0.9rem;

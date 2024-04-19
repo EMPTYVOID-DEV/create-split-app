@@ -75,6 +75,13 @@
 		word-break: break-all;
 	}
 
+	.wrapper input{
+		border: 2px solid #121212;
+	}
+	.wrapper input:focus{
+		border: 2px solid #3498db;
+	}
+
 	.wrapper input,
 	.wrapper button {
 		padding: 0.5rem 1rem;
