@@ -1,5 +1,11 @@
 # create-split-app
 
+## 0.3.0
+
+### Minor Changes
+
+- 0f7b5ff: Adjusting drizzle config for the new update
+
 ## 0.2.1
 
 ### Patch Changes
