@@ -15,6 +15,8 @@ import path from "path";
 import { workingDir } from "./const.js";
 import fsExtra from "fs-extra";
 
+//TODO: add zod
+
 async function main() {
   welcome();
   const { orm, name, tailwind, express, lucia, git, installPackages } =

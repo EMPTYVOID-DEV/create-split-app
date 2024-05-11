@@ -46,13 +46,8 @@ export const migrationCommands = new Map<
   [
     "drizzle",
     {
-      prepare: [
-        "drizzle-kit",
-        "generate:sqlite",
-        "--config",
-        "./drizzle.config.ts",
-      ],
-      push: ["drizzle-kit", "push:sqlite", "--config", "./drizzle.config.ts"],
+      prepare: ["drizzle-kit", "generate", "--name", "initial_migration"],
+      push: ["drizzle-kit", "push"],
     },
   ],
 ]);

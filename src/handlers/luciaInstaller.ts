@@ -3,6 +3,7 @@ import fsExtra from "fs-extra";
 import { extraSrc, authDestPath } from "../const.js";
 import { logger } from "../utils/logger.js";
 import { addDependency } from "../utils/addDependency.js";
+import { addScript } from "../utils/addScripts.js";
 
 export async function luciaInstaller(
   destDir: string,
@@ -18,6 +19,8 @@ export async function luciaInstaller(
   const appTypesDest = path.join(destDir, "src/app.d.ts");
   const hookLuciaSrc = path.join(extraSrc, "other/hook.server.ts");
   const hookLuciaDest = path.join(destDir, "src/hooks.server.ts");
+
+  addScript(destDir, [{ name: "mail", value: "npx run maildev" }]);
 
   addDependency(["lucia", "oslo"], false, destDir);
   // create the auth dir synchronously

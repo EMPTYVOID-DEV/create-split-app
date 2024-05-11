@@ -44,6 +44,10 @@ async function primsa(destDir: string, isLucia: boolean) {
 
   const scripts: { name: string; value: string }[] = [
     {
+      name: "db-studio",
+      value: "npx prisma studio",
+    },
+    {
       name: "migrate",
       value: "npx prisma migrate dev",
     },
@@ -83,12 +87,16 @@ async function drizzle(destDir: string, isLucia: boolean) {
 
   const scripts: { name: string; value: string }[] = [
     {
+      name: "db-studio",
+      value: "npx drizzle-kit studio",
+    },
+    {
       name: "migrate",
-      value: "npx drizzle-kit generate:sqlite --config ./drizzle.config.ts",
+      value: "npx drizzle-kit generate",
     },
     {
       name: "push-migrations",
-      value: "npx drizzle-kit push:sqlite --config ./drizzle.config.ts",
+      value: "npx drizzle-kit push",
     },
   ];
 

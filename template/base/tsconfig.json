@@ -6,17 +6,8 @@
 		"module": "es2020",
 		"lib": ["es2020"],
 		"target": "es2019",
-
-		/**
-			  svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
-			  to enforce using \`import type\` instead of \`import\` for Types.
-			  */
 		"isolatedModules": true,
-		"resolveJsonModule": true,
-		/**
-			  To have warnings/errors of the Svelte compiler at the correct position,
-			  enable source maps by default.
-			  */
+		"resolveJsonModule": true,		
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
@@ -26,15 +17,7 @@
 		"checkJs": true,
 		"paths": {
 			"$lib/*": ["src/lib/*"],
-			"$lib": ["./src/lib"],
-      "$global": ["./src/lib/global"],
-			"$global/*": ["src/lib/global/*"],
-			"$client": ["./src/lib/client"],
-			"$client/*": ["src/lib/client/*"],
-			"$server": ["./src/lib/server"],
-			"$server/*": ["src/lib/server/*"],
-			"$assets/*": ["src/lib/assets/*"],
-			"$assets": ["./src/lib/assets"],
+			"$lib": ["./src/lib"],    
 			"$/*": ["./src/*"],							 
 			"$app": ["./node_modules/@sveltejs/kit/types"],
 			"$app/*": ["./node_modules/@sveltejs/kit/types/ambient.d.ts"]
