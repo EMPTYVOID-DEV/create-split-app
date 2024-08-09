@@ -1,5 +1,11 @@
 # create-split-app
 
+## 0.3.1
+
+### Patch Changes
+
+- b5aea01: Just adding a migrate script to drizzle and using it after successful packages install
+
 ## 0.3.0
 
 ### Minor Changes
