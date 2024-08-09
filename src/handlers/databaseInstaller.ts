@@ -96,6 +96,10 @@ async function drizzle(destDir: string, isLucia: boolean) {
     },
     {
       name: "push-migrations",
+      value: "npx drizzle-kit migrate",
+    },
+    {
+      name: "push-schema",
       value: "npx drizzle-kit push",
     },
   ];

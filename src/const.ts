@@ -47,7 +47,7 @@ export const migrationCommands = new Map<
     "drizzle",
     {
       prepare: ["drizzle-kit", "generate", "--name", "initial_migration"],
-      push: ["drizzle-kit", "push"],
+      push: ["drizzle-kit", "migrate"],
     },
   ],
 ]);

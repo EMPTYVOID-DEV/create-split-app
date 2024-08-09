@@ -13,9 +13,9 @@ import { installPackages as install } from "./handlers/installPackages.js";
 import { initGit } from "./handlers/initGit.js";
 import path from "path";
 import { workingDir } from "./const.js";
-import fsExtra from "fs-extra";
 
 //TODO: add zod
+// TODO: add another js framework
 
 async function main() {
   welcome();
